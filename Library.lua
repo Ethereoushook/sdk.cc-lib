@@ -3152,7 +3152,7 @@ function Library:CreateWindow(...)
 
     local TabArea = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, -22);
+        Position = UDim2.new(0, 0, 0, 0);
         Size = UDim2.new(1, 0, 0, 22);
         ZIndex = 3;
         Parent = MainSectionInner;
@@ -3167,8 +3167,8 @@ function Library:CreateWindow(...)
 
     local TabContainer = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 0);
-        Size = UDim2.new(1, 0, 1, 0);
+        Position = UDim2.new(0, 0, 0, 22);
+        Size = UDim2.new(1, 0, 1, -22);
         ZIndex = 2;
         Parent = MainSectionInner;
     });
@@ -3490,12 +3490,13 @@ function Library:CreateWindow(...)
 
             function Tabbox:AddTab(Name)
                 local Tab = {};
+                local ButtonWidth = Library:GetTextBounds(Name, Enum.Font.SourceSans, 13);
 
                 local Button = Library:Create('Frame', {
                     BackgroundColor3 = Library.MainColor;
                     BorderColor3 = Color3.new(0, 0, 0);
                     BorderSizePixel = 0;
-                    Size = UDim2.new(0.5, 0, 1, 0);
+                    Size = UDim2.new(0, ButtonWidth + 20, 1, 0);
                     ZIndex = 6;
                     Parent = TabboxButtons;
                 });
@@ -3591,18 +3592,6 @@ function Library:CreateWindow(...)
                 end;
 
                 function Tab:Resize()
-                    local TabCount = 0;
-
-                    for _, Tab in next, Tabbox.Tabs do
-                        TabCount = TabCount + 1;
-                    end;
-
-                    for _, Button in next, TabboxButtons:GetChildren() do
-                        if not Button:IsA('UIListLayout') then
-                            Button.Size = UDim2.new(1 / TabCount, 0, 1, 0);
-                        end;
-                    end;
-
                     if (not Container.Visible) then
                         return;
                     end;
