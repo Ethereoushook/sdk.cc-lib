@@ -11,6 +11,7 @@ local Mouse = LocalPlayer:GetMouse();
 
 local SourceSansFace = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 local MonoFace = Font.new([[rbxasset://fonts/families/RobotoMono.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+local Backslash = string.char(92)
 
 local ProtectGui = protectgui or (syn and syn.protect_gui) or (function() end);
 
@@ -2794,17 +2795,8 @@ do
         Parent = WatermarkOuter;
     });
 
-    local WatermarkLayout = Library:Create('UIListLayout', {
-        FillDirection = Enum.FillDirection.Horizontal;
-        SortOrder = Enum.SortOrder.LayoutOrder;
-        VerticalAlignment = Enum.VerticalAlignment.Center;
-        Padding = UDim.new(0, 2);
-        Parent = WatermarkContainer;
-    });
-
     Library.Watermark = WatermarkOuter;
     Library.WatermarkContainer = WatermarkContainer;
-    Library.WatermarkLayout = WatermarkLayout;
     Library:MakeDraggable(Library.Watermark);
 
     local KeybindOuter = Library:Create('Frame', {
@@ -2873,7 +2865,7 @@ end;
 function Library:SetWatermark(Text)
     local Parts = {}
     local RawParts = Text:find('|', 1, true) and Library:SplitString(Text, '|')
-        or Text:find('\\', 1, true) and Library:SplitString(Text, '\\')
+        or Text:find(Backslash, 1, true) and Library:SplitString(Text, Backslash)
         or { Text }
 
     for _, Part in next, RawParts do
@@ -2881,20 +2873,19 @@ function Library:SetWatermark(Text)
     end
 
     for _, Child in next, Library.WatermarkContainer:GetChildren() do
-        if not Child:IsA('UIListLayout') then
-            Child:Destroy()
-        end
+        Child:Destroy()
     end
 
     local Width = 0
+    local Offset = 0
 
     for Index, Part in next, Parts do
         local X = Library:GetTextBounds(Part, Enum.Font.SourceSans, 14)
 
         local Label = Library:Create('TextLabel', {
-            AutomaticSize = Enum.AutomaticSize.X;
             BackgroundTransparency = 1;
             FontFace = SourceSansFace;
+            Position = UDim2.fromOffset(Offset, 0);
             Size = UDim2.new(0, X, 1, 0);
             Text = Part;
             TextColor3 = Library.FontColor;
@@ -2908,14 +2899,16 @@ function Library:SetWatermark(Text)
             TextColor3 = 'FontColor';
         }, true);
 
+        Offset = Offset + X
         Width = Width + X
 
         if Index < #Parts then
             local Sep = Library:Create('TextLabel', {
                 BackgroundTransparency = 1;
                 FontFace = SourceSansFace;
+                Position = UDim2.fromOffset(Offset + 2, 0);
                 Size = UDim2.new(0, 8, 1, 0);
-                Text = '\\';
+                Text = Backslash;
                 TextColor3 = Color3.new(1, 1, 1);
                 TextSize = 14;
                 TextXAlignment = Enum.TextXAlignment.Left;
@@ -2924,11 +2917,12 @@ function Library:SetWatermark(Text)
             });
 
             Library:ApplyAccentGradient(Sep, 90, false, true);
-            Width = Width + 8
+
+            Offset = Offset + 10
+            Width = Width + 10
         end
     end
 
-    Width = Width + math.max(#Parts - 1, 0) * 4
     Library.Watermark.Size = UDim2.fromOffset(Width + 12, 25);
     Library:SetWatermarkVisibility(true)
 end;
@@ -3063,19 +3057,10 @@ function Library:CreateWindow(...)
         Parent = Inner;
     });
 
-    Library:Create('UIListLayout', {
-        FillDirection = Enum.FillDirection.Horizontal;
-        SortOrder = Enum.SortOrder.LayoutOrder;
-        VerticalAlignment = Enum.VerticalAlignment.Center;
-        Padding = UDim.new(0, 2);
-        Parent = LogoHolder;
-    });
-
     local WindowLabel = Library:Create('TextLabel', {
-        AutomaticSize = Enum.AutomaticSize.X;
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Size = UDim2.new(0, 0, 0, 20);
+        Size = UDim2.new(0, 100, 0, 20);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
         TextSize = 15;
@@ -3090,11 +3075,10 @@ function Library:CreateWindow(...)
     });
 
     local WindowSeparator = Library:Create('TextLabel', {
-        AutomaticSize = Enum.AutomaticSize.X;
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Size = UDim2.new(0, 0, 0, 20);
-        Text = '\\';
+        Size = UDim2.new(0, 9, 0, 20);
+        Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
         TextSize = 15;
         TextStrokeTransparency = 0.25;
@@ -3106,10 +3090,9 @@ function Library:CreateWindow(...)
     Library:ApplyAccentGradient(WindowSeparator, 90, false);
 
     local WindowSubLabel = Library:Create('TextLabel', {
-        AutomaticSize = Enum.AutomaticSize.X;
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Size = UDim2.new(0, 0, 0, 20);
+        Size = UDim2.new(0, 150, 0, 20);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
         TextSize = 14;
@@ -3122,6 +3105,18 @@ function Library:CreateWindow(...)
     Library:AddToRegistry(WindowSubLabel, {
         TextColor3 = 'FontColor';
     });
+
+    local function UpdateWindowHeader()
+        local TitleWidth = Library:GetTextBounds(WindowLabel.Text, Enum.Font.Code, 15)
+        local SubWidth = Library:GetTextBounds(WindowSubLabel.Text, Enum.Font.Code, 14)
+
+        WindowLabel.Size = UDim2.new(0, TitleWidth + 4, 0, 20)
+        WindowSeparator.Position = UDim2.fromOffset(TitleWidth + 4, 0)
+        WindowSubLabel.Position = UDim2.fromOffset(TitleWidth + 14, 0)
+        WindowSubLabel.Size = UDim2.new(0, SubWidth + 4, 0, 20)
+    end
+
+    UpdateWindowHeader()
 
     local MainSectionOuter = Library:Create('Frame', {
         BackgroundColor3 = Library.BackgroundColor;
@@ -3162,14 +3157,15 @@ function Library:CreateWindow(...)
 
     local TabContainer = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 11);
-        Size = UDim2.new(1, 0, 1, -11);
+        Position = UDim2.new(0, 0, 0, 0);
+        Size = UDim2.new(1, 0, 1, 0);
         ZIndex = 2;
         Parent = MainSectionInner;
     });
 
     function Window:SetWindowTitle(Title)
         WindowLabel.Text = Title;
+        UpdateWindowHeader()
     end;
 
     function Window:AddTab(Name)
