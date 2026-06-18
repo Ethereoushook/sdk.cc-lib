@@ -1,4 +1,5 @@
 local httpService = game:GetService('HttpService')
+local Backslash = string.char(92)
 
 local SaveManager = {} do
 	SaveManager.Folder = 'LinoriaLibSettings'
@@ -90,16 +91,15 @@ local SaveManager = {} do
 		}
 
 		for idx, toggle in next, Toggles do
-			if self.Ignore[idx] then continue end
-
-			table.insert(data.objects, self.Parser[toggle.Type].Save(idx, toggle))
+			if not self.Ignore[idx] then
+				table.insert(data.objects, self.Parser[toggle.Type].Save(idx, toggle))
+			end
 		end
 
 		for idx, option in next, Options do
-			if not self.Parser[option.Type] then continue end
-			if self.Ignore[idx] then continue end
-
-			table.insert(data.objects, self.Parser[option.Type].Save(idx, option))
+			if self.Parser[option.Type] and not self.Ignore[idx] then
+				table.insert(data.objects, self.Parser[option.Type].Save(idx, option))
+			end
 		end	
 
 		local success, encoded = pcall(httpService.JSONEncode, httpService, data)
@@ -133,7 +133,7 @@ local SaveManager = {} do
 
 	function SaveManager:IgnoreThemeSettings()
 		self:SetIgnoreIndexes({ 
-			"BackgroundColor", "MainColor", "AccentColor", "AccentColor2", "OutlineColor", "FontColor", -- themes
+			"BackgroundColor", "MainColor", "AccentColor", "AccentColor2", "AccentColor3", "OutlineColor", "FontColor", -- themes
 			"ThemeManager_ThemeList", 'ThemeManager_CustomThemeList', 'ThemeManager_CustomThemeName', -- themes
 		})
 	end
@@ -166,12 +166,12 @@ local SaveManager = {} do
 				local start = pos
 
 				local char = file:sub(pos, pos)
-				while char ~= '/' and char ~= '\\' and char ~= '' do
+				while char ~= '/' and char ~= Backslash and char ~= '' do
 					pos = pos - 1
 					char = file:sub(pos, pos)
 				end
 
-				if char == '/' or char == '\\' then
+				if char == '/' or char == Backslash then
 					table.insert(out, file:sub(pos + 1, start - 1))
 				end
 			end
