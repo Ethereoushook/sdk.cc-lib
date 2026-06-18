@@ -38,6 +38,7 @@ local Library = {
     BackgroundColor = Color3.fromRGB(21, 21, 21);
     AccentColor = Color3.fromRGB(212, 181, 234);
     AccentColor2 = Color3.fromRGB(162, 184, 239);
+    AccentColor3 = Color3.fromRGB(164, 184, 239);
     OutlineColor = Color3.fromRGB(46, 46, 46);
     RiskColor = Color3.fromRGB(255, 50, 50),
 
@@ -329,7 +330,7 @@ end;
 
 function Library:GetAccentMirrorColorSequence()
     return ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Library.AccentColor2),
+        ColorSequenceKeypoint.new(0, Library.AccentColor3),
         ColorSequenceKeypoint.new(0.5, Library.AccentColor),
         ColorSequenceKeypoint.new(1, Library.AccentColor2),
     });
@@ -3064,7 +3065,7 @@ function Library:CreateWindow(...)
     local LogoHolder = Library:Create('Frame', {
         BackgroundTransparency = 1;
         Position = UDim2.new(0, 0, 0, 0);
-        Size = UDim2.new(1, -12, 0, 20);
+        Size = UDim2.new(1, -12, 0, 25);
         ZIndex = 2;
         Parent = Inner;
     });
@@ -3073,7 +3074,7 @@ function Library:CreateWindow(...)
         BackgroundTransparency = 1;
         FontFace = MonoFace;
         Position = UDim2.new(0, 0, 0, -1);
-        Size = UDim2.new(0, 100, 0, 20);
+        Size = UDim2.new(0, 55, 0, 25);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
         TextSize = 15;
@@ -3090,8 +3091,8 @@ function Library:CreateWindow(...)
     local WindowSeparator = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 56, 0, -1);
-        Size = UDim2.new(0, 9, 0, 20);
+        Position = UDim2.new(0, 55, 0, -1);
+        Size = UDim2.new(0, 9, 0, 25);
         Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
         TextSize = 15;
@@ -3106,8 +3107,8 @@ function Library:CreateWindow(...)
     local WindowSubLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 71, 0, -1);
-        Size = UDim2.new(0, 150, 0, 20);
+        Position = UDim2.new(0, 70, 0, -1);
+        Size = UDim2.new(0, 87, 0, 25);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
         TextSize = 14;
@@ -3122,13 +3123,12 @@ function Library:CreateWindow(...)
     });
 
     local function UpdateWindowHeader()
-        local TitleWidth = Library:GetTextBounds(WindowLabel.Text, Enum.Font.RobotoMono, 15)
-        local SubWidth = Library:GetTextBounds(WindowSubLabel.Text, Enum.Font.RobotoMono, 14)
-
-        WindowLabel.Size = UDim2.new(0, TitleWidth + 4, 0, 20)
-        WindowSeparator.Position = UDim2.fromOffset(TitleWidth + 4, 0)
-        WindowSubLabel.Position = UDim2.fromOffset(TitleWidth + 14, 0)
-        WindowSubLabel.Size = UDim2.new(0, SubWidth + 4, 0, 20)
+        WindowLabel.Position = UDim2.new(0, 0, 0, -1)
+        WindowLabel.Size = UDim2.new(0, 55, 0, 25)
+        WindowSeparator.Position = UDim2.new(0, 55, 0, -1)
+        WindowSeparator.Size = UDim2.new(0, 9, 0, 25)
+        WindowSubLabel.Position = UDim2.new(0, 70, 0, -1)
+        WindowSubLabel.Size = UDim2.new(0, 87, 0, 25)
     end
 
     UpdateWindowHeader()
@@ -3233,7 +3233,7 @@ function Library:CreateWindow(...)
         });
 
         local AccentLine = Library:Create('Frame', {
-            BackgroundColor3 = Color3.new(1, 1, 1);
+            BackgroundColor3 = Color3.fromRGB(157, 157, 157);
             BorderSizePixel = 0;
             Position = UDim2.new(0.5, -12, 0, 2);
             Size = UDim2.new(0, 25, 0, 1);
@@ -3316,6 +3316,7 @@ function Library:CreateWindow(...)
 
             Blocker.BackgroundTransparency = 1;
             TabButtonLabel.TextColor3 = Library.FontColor;
+            AccentLine.BackgroundColor3 = Color3.new(1, 1, 1)
             Library.RegistryMap[TabButtonLabel].Properties.TextColor3 = 'FontColor';
             TabFrame.Visible = true;
         end;
@@ -3323,6 +3324,7 @@ function Library:CreateWindow(...)
         function Tab:HideTab()
             Blocker.BackgroundTransparency = 1;
             TabButtonLabel.TextColor3 = Color3.fromRGB(157, 157, 157);
+            AccentLine.BackgroundColor3 = Color3.fromRGB(157, 157, 157)
             Library.RegistryMap[TabButtonLabel].Properties.TextColor3 = function() return Color3.fromRGB(157, 157, 157) end;
             TabFrame.Visible = false;
         end;
@@ -3530,7 +3532,7 @@ function Library:CreateWindow(...)
                 });
 
                 local AccentLine = Library:Create('Frame', {
-                    BackgroundColor3 = Color3.new(1, 1, 1);
+                    BackgroundColor3 = Color3.fromRGB(157, 157, 157);
                     BorderSizePixel = 0;
                     Position = UDim2.new(0.5, -12, 0, 2);
                     Size = UDim2.new(0, 25, 0, 1);
@@ -3573,6 +3575,7 @@ function Library:CreateWindow(...)
                     Block.Visible = true;
 
                     ButtonLabel.TextColor3 = Library.FontColor;
+                    AccentLine.BackgroundColor3 = Color3.new(1, 1, 1)
 
                     Tab:Resize();
                 end;
@@ -3582,6 +3585,7 @@ function Library:CreateWindow(...)
                     Block.Visible = false;
 
                     ButtonLabel.TextColor3 = Color3.fromRGB(157, 157, 157);
+                    AccentLine.BackgroundColor3 = Color3.fromRGB(157, 157, 157)
                 end;
 
                 function Tab:Resize()
