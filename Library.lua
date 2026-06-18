@@ -337,6 +337,7 @@ end;
 
 function Library:ApplyAccentGradient(Parent, Rotation, Mirrored, IsHud)
     local Gradient = Library:Create('UIGradient', {
+        Color = Mirrored and Library:GetAccentMirrorColorSequence() or Library:GetAccentColorSequence();
         Rotation = Rotation or 0;
         Parent = Parent;
     });
@@ -2106,9 +2107,11 @@ do
         });
 
         local DisplayLabel = Library:CreateLabel({
+            Position = UDim2.new(0, 0, 0, -1);
             Size = UDim2.new(1, 0, 1, 0);
             TextSize = 14;
             Text = 'Infinite';
+            TextYAlignment = Enum.TextYAlignment.Center;
             ZIndex = 9;
             Parent = SliderInner;
         });
@@ -3119,8 +3122,8 @@ function Library:CreateWindow(...)
     });
 
     local function UpdateWindowHeader()
-        local TitleWidth = Library:GetTextBounds(WindowLabel.Text, Enum.Font.Code, 15)
-        local SubWidth = Library:GetTextBounds(WindowSubLabel.Text, Enum.Font.Code, 14)
+        local TitleWidth = Library:GetTextBounds(WindowLabel.Text, Enum.Font.RobotoMono, 15)
+        local SubWidth = Library:GetTextBounds(WindowSubLabel.Text, Enum.Font.RobotoMono, 14)
 
         WindowLabel.Size = UDim2.new(0, TitleWidth + 4, 0, 20)
         WindowSeparator.Position = UDim2.fromOffset(TitleWidth + 4, 0)
@@ -3191,7 +3194,7 @@ function Library:CreateWindow(...)
         local TabButton = Library:Create('Frame', {
             BackgroundColor3 = Library.MainColor;
             BorderColor3 = Color3.new(0, 0, 0);
-            BorderSizePixel = 1;
+            BorderSizePixel = 0;
             Size = UDim2.new(0, TabButtonWidth + 20, 1, 0);
             ZIndex = 3;
             Parent = TabArea;
@@ -3491,7 +3494,7 @@ function Library:CreateWindow(...)
                 local Button = Library:Create('Frame', {
                     BackgroundColor3 = Library.MainColor;
                     BorderColor3 = Color3.new(0, 0, 0);
-                    BorderSizePixel = 1;
+                    BorderSizePixel = 0;
                     Size = UDim2.new(0.5, 0, 1, 0);
                     ZIndex = 6;
                     Parent = TabboxButtons;
@@ -3606,7 +3609,7 @@ function Library:CreateWindow(...)
                         end;
                     end;
 
-                    BoxOuter.Size = UDim2.new(1, 0, 0, 26 + Size + 4);
+                    BoxOuter.Size = UDim2.new(1, 0, 0, 30 + Size + 4);
                 end;
 
                 Button.InputBegan:Connect(function(Input)
