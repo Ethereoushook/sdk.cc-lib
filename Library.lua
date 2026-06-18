@@ -2795,7 +2795,7 @@ do
         BackgroundTransparency = 1;
         Position = UDim2.new(0, 5, 0, 0);
         Size = UDim2.new(1, -10, 1, 0);
-        ZIndex = 201;
+        ZIndex = 202;
         Parent = WatermarkOuter;
     });
 
@@ -2895,7 +2895,8 @@ function Library:SetWatermark(Text)
             TextColor3 = Library.FontColor;
             TextSize = 14;
             TextXAlignment = Enum.TextXAlignment.Left;
-            ZIndex = 201;
+            TextYAlignment = Enum.TextYAlignment.Center;
+            ZIndex = 203;
             Parent = Library.WatermarkContainer;
         });
 
@@ -2916,7 +2917,8 @@ function Library:SetWatermark(Text)
                 TextColor3 = Color3.new(1, 1, 1);
                 TextSize = 14;
                 TextXAlignment = Enum.TextXAlignment.Left;
-                ZIndex = 201;
+                TextYAlignment = Enum.TextYAlignment.Center;
+                ZIndex = 203;
                 Parent = Library.WatermarkContainer;
             });
 
@@ -3062,11 +3064,8 @@ function Library:CreateWindow(...)
         BorderColor3 = 'OutlineColor';
     });
 
-    local LogoHolder = Library:Create('Frame', {
-        BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 0);
-        Size = UDim2.new(1, -12, 0, 25);
-        ZIndex = 2;
+    local LogoHolder = Library:Create('Folder', {
+        Name = 'LogoHolder';
         Parent = Inner;
     });
 
