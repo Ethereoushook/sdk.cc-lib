@@ -3060,15 +3060,18 @@ function Library:CreateWindow(...)
         BorderColor3 = 'OutlineColor';
     });
 
-    local LogoHolder = Library:Create('Folder', {
-        Name = 'LogoHolder';
+    local LogoHolder = Library:Create('Frame', {
+        BackgroundTransparency = 1;
+        Position = UDim2.new(0, 0, 0, 0);
+        Size = UDim2.new(1, 0, 0, 25);
+        ZIndex = 12;
         Parent = Inner;
     });
 
     local WindowLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 0, 0, -6);
+        Position = UDim2.new(0, 0, 0, -1);
         Size = UDim2.new(0, 55, 0, 25);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
@@ -3086,7 +3089,7 @@ function Library:CreateWindow(...)
     local WindowSeparator = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 55, 0, -6);
+        Position = UDim2.new(0, 55, 0, -1);
         Size = UDim2.new(0, 9, 0, 25);
         Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
@@ -3102,7 +3105,7 @@ function Library:CreateWindow(...)
     local WindowSubLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 70, 0, -6);
+        Position = UDim2.new(0, 70, 0, -1);
         Size = UDim2.new(0, 87, 0, 25);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
@@ -3118,11 +3121,11 @@ function Library:CreateWindow(...)
     });
 
     local function UpdateWindowHeader()
-        WindowLabel.Position = UDim2.new(0, 0, 0, -6)
+        WindowLabel.Position = UDim2.new(0, 0, 0, -1)
         WindowLabel.Size = UDim2.new(0, 55, 0, 25)
-        WindowSeparator.Position = UDim2.new(0, 55, 0, -6)
+        WindowSeparator.Position = UDim2.new(0, 55, 0, -1)
         WindowSeparator.Size = UDim2.new(0, 9, 0, 25)
-        WindowSubLabel.Position = UDim2.new(0, 70, 0, -6)
+        WindowSubLabel.Position = UDim2.new(0, 70, 0, -1)
         WindowSubLabel.Size = UDim2.new(0, 87, 0, 25)
     end
 
