@@ -3013,7 +3013,8 @@ function Library:CreateWindow(...)
     local Outer = Library:Create('Frame', {
         AnchorPoint = Config.AnchorPoint,
         BackgroundColor3 = Library.BackgroundColor;
-        BorderSizePixel = 0;
+        BorderColor3 = Color3.new(0, 0, 0);
+        BorderSizePixel = 1;
         Position = Config.Position,
         Size = Config.Size,
         Visible = false;
@@ -3038,10 +3039,18 @@ function Library:CreateWindow(...)
     local Inner = Library:Create('Frame', {
         BackgroundColor3 = Library.MainColor;
         BorderColor3 = Library.OutlineColor;
+        BorderSizePixel = 1;
         Position = UDim2.new(0, 10, 0, 25);
         Size = UDim2.new(1, -20, 1, -35);
         ZIndex = 1;
         Parent = Outer;
+    });
+
+    local InnerStroke = Library:Create('UIStroke', {
+        Color = Color3.new(0, 0, 0);
+        LineJoinMode = Enum.LineJoinMode.Miter;
+        BorderStrokePosition = Enum.BorderStrokePosition.Inner;
+        Parent = Inner;
     });
 
     Library:AddToRegistry(Inner, {
@@ -3060,6 +3069,7 @@ function Library:CreateWindow(...)
     local WindowLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
+        Position = UDim2.new(0, 0, 0, -1);
         Size = UDim2.new(0, 100, 0, 20);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
@@ -3077,6 +3087,7 @@ function Library:CreateWindow(...)
     local WindowSeparator = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
+        Position = UDim2.new(0, 56, 0, -1);
         Size = UDim2.new(0, 9, 0, 20);
         Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
@@ -3092,6 +3103,7 @@ function Library:CreateWindow(...)
     local WindowSubLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
+        Position = UDim2.new(0, 71, 0, -1);
         Size = UDim2.new(0, 150, 0, 20);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
@@ -3142,7 +3154,7 @@ function Library:CreateWindow(...)
 
     local TabArea = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, -11);
+        Position = UDim2.new(0, 0, 0, -22);
         Size = UDim2.new(1, 0, 0, 22);
         ZIndex = 3;
         Parent = MainSectionInner;
@@ -3178,25 +3190,37 @@ function Library:CreateWindow(...)
 
         local TabButton = Library:Create('Frame', {
             BackgroundColor3 = Library.MainColor;
-            BorderColor3 = Library.OutlineColor;
+            BorderColor3 = Color3.new(0, 0, 0);
+            BorderSizePixel = 1;
             Size = UDim2.new(0, TabButtonWidth + 20, 1, 0);
             ZIndex = 3;
             Parent = TabArea;
         });
 
+        local TabButtonStroke = Library:Create('UIStroke', {
+            Color = Library.OutlineColor;
+            LineJoinMode = Enum.LineJoinMode.Miter;
+            BorderStrokePosition = Enum.BorderStrokePosition.Center;
+            Parent = TabButton;
+        });
+
         Library:AddToRegistry(TabButton, {
             BackgroundColor3 = 'MainColor';
-            BorderColor3 = 'OutlineColor';
+        });
+
+        Library:AddToRegistry(TabButtonStroke, {
+            Color = 'OutlineColor';
         });
 
         local TabButtonLabel = Library:Create('TextLabel', {
             BackgroundTransparency = 1;
             FontFace = SourceSansFace;
-            Position = UDim2.new(0, 0, 0, 0);
+            Position = UDim2.new(0, 0, 0, -1);
             Size = UDim2.new(1, 0, 1, 0);
             Text = Name;
             TextColor3 = Color3.fromRGB(157, 157, 157);
             TextSize = 13;
+            TextStrokeTransparency = 0.79;
             ZIndex = 5;
             Parent = TabButton;
         });
@@ -3311,9 +3335,17 @@ function Library:CreateWindow(...)
             local BoxOuter = Library:Create('Frame', {
                 BackgroundColor3 = Library.MainColor;
                 BorderColor3 = Library.OutlineColor;
+                BorderSizePixel = 1;
                 Size = UDim2.new(1, 0, 0, 507 + 2);
                 ZIndex = 2;
                 Parent = Info.Side == 1 and LeftSide or RightSide;
+            });
+
+            local BoxOuterStroke = Library:Create('UIStroke', {
+                Color = Color3.new(0, 0, 0);
+                LineJoinMode = Enum.LineJoinMode.Miter;
+                BorderStrokePosition = Enum.BorderStrokePosition.Inner;
+                Parent = BoxOuter;
             });
 
             Library:AddToRegistry(BoxOuter, {
@@ -3402,9 +3434,17 @@ function Library:CreateWindow(...)
             local BoxOuter = Library:Create('Frame', {
                 BackgroundColor3 = Library.MainColor;
                 BorderColor3 = Library.OutlineColor;
+                BorderSizePixel = 1;
                 Size = UDim2.new(1, 0, 0, 0);
                 ZIndex = 2;
                 Parent = Info.Side == 1 and LeftSide or RightSide;
+            });
+
+            local BoxOuterStroke = Library:Create('UIStroke', {
+                Color = Color3.new(0, 0, 0);
+                LineJoinMode = Enum.LineJoinMode.Miter;
+                BorderStrokePosition = Enum.BorderStrokePosition.Inner;
+                Parent = BoxOuter;
             });
 
             Library:AddToRegistry(BoxOuter, {
@@ -3432,7 +3472,7 @@ function Library:CreateWindow(...)
 
             local TabboxButtons = Library:Create('Frame', {
                 BackgroundTransparency = 1;
-                Position = UDim2.new(0, 0, 0, 8);
+                Position = UDim2.new(0, 0, 0, 10);
                 Size = UDim2.new(1, 0, 0, 18);
                 ZIndex = 5;
                 Parent = BoxInner;
@@ -3450,24 +3490,37 @@ function Library:CreateWindow(...)
 
                 local Button = Library:Create('Frame', {
                     BackgroundColor3 = Library.MainColor;
-                    BorderColor3 = Library.OutlineColor;
+                    BorderColor3 = Color3.new(0, 0, 0);
+                    BorderSizePixel = 1;
                     Size = UDim2.new(0.5, 0, 1, 0);
                     ZIndex = 6;
                     Parent = TabboxButtons;
                 });
 
+                local ButtonStroke = Library:Create('UIStroke', {
+                    Color = Library.OutlineColor;
+                    LineJoinMode = Enum.LineJoinMode.Miter;
+                    BorderStrokePosition = Enum.BorderStrokePosition.Center;
+                    Parent = Button;
+                });
+
                 Library:AddToRegistry(Button, {
                     BackgroundColor3 = 'MainColor';
-                    BorderColor3 = 'OutlineColor';
+                });
+
+                Library:AddToRegistry(ButtonStroke, {
+                    Color = 'OutlineColor';
                 });
 
                 local ButtonLabel = Library:Create('TextLabel', {
                     BackgroundTransparency = 1;
                     FontFace = SourceSansFace;
+                    Position = UDim2.new(0, 0, 0, -1);
                     Size = UDim2.new(1, 0, 1, 0);
                     Text = Name;
                     TextColor3 = Color3.fromRGB(157, 157, 157);
                     TextSize = 13;
+                    TextStrokeTransparency = 0.79;
                     TextXAlignment = Enum.TextXAlignment.Center;
                     ZIndex = 7;
                     Parent = Button;
@@ -3495,8 +3548,8 @@ function Library:CreateWindow(...)
 
                 local Container = Library:Create('Frame', {
                     BackgroundTransparency = 1;
-                    Position = UDim2.new(0, 4, 0, 26);
-                    Size = UDim2.new(1, -8, 1, -26);
+                    Position = UDim2.new(0, 4, 0, 30);
+                    Size = UDim2.new(1, -8, 1, -30);
                     ZIndex = 1;
                     Visible = false;
                     Parent = BoxInner;
