@@ -2873,7 +2873,7 @@ end;
 function Library:SetWatermark(Text)
     local Parts = {}
     local RawParts = Text:find('|', 1, true) and Library:SplitString(Text, '|')
-        or Text:find('\', 1, true) and Library:SplitString(Text, '\')
+        or Text:find('\\', 1, true) and Library:SplitString(Text, '\\')
         or { Text }
 
     for _, Part in next, RawParts do
