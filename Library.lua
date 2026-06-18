@@ -3068,7 +3068,7 @@ function Library:CreateWindow(...)
     local WindowLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 0, 0, -1);
+        Position = UDim2.new(0, 0, 0, -3);
         Size = UDim2.new(0, 55, 0, 25);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
@@ -3086,7 +3086,7 @@ function Library:CreateWindow(...)
     local WindowSeparator = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 55, 0, -1);
+        Position = UDim2.new(0, 55, 0, -3);
         Size = UDim2.new(0, 9, 0, 25);
         Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
@@ -3102,7 +3102,7 @@ function Library:CreateWindow(...)
     local WindowSubLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 70, 0, -1);
+        Position = UDim2.new(0, 70, 0, -3);
         Size = UDim2.new(0, 87, 0, 25);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
@@ -3118,11 +3118,11 @@ function Library:CreateWindow(...)
     });
 
     local function UpdateWindowHeader()
-        WindowLabel.Position = UDim2.new(0, 0, 0, -1)
+        WindowLabel.Position = UDim2.new(0, 0, 0, -3)
         WindowLabel.Size = UDim2.new(0, 55, 0, 25)
-        WindowSeparator.Position = UDim2.new(0, 55, 0, -1)
+        WindowSeparator.Position = UDim2.new(0, 55, 0, -3)
         WindowSeparator.Size = UDim2.new(0, 9, 0, 25)
-        WindowSubLabel.Position = UDim2.new(0, 70, 0, -1)
+        WindowSubLabel.Position = UDim2.new(0, 70, 0, -3)
         WindowSubLabel.Size = UDim2.new(0, 87, 0, 25)
     end
 
@@ -3152,7 +3152,7 @@ function Library:CreateWindow(...)
 
     local TabArea = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 0);
+        Position = UDim2.new(0, 0, 0, -22);
         Size = UDim2.new(1, 0, 0, 22);
         ZIndex = 3;
         Parent = MainSectionInner;
@@ -3167,8 +3167,8 @@ function Library:CreateWindow(...)
 
     local TabContainer = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 22);
-        Size = UDim2.new(1, 0, 1, -22);
+        Position = UDim2.new(0, 0, 0, 0);
+        Size = UDim2.new(1, 0, 1, 0);
         ZIndex = 2;
         Parent = MainSectionInner;
     });
@@ -3481,7 +3481,8 @@ function Library:CreateWindow(...)
                 Parent = BoxInner;
             });
 
-            Library:Create('UIListLayout', {
+            local TabboxLayout = Library:Create('UIListLayout', {
+                Padding = UDim.new(0, 4);
                 FillDirection = Enum.FillDirection.Horizontal;
                 HorizontalAlignment = Enum.HorizontalAlignment.Left;
                 SortOrder = Enum.SortOrder.LayoutOrder;
@@ -3490,13 +3491,12 @@ function Library:CreateWindow(...)
 
             function Tabbox:AddTab(Name)
                 local Tab = {};
-                local ButtonWidth = Library:GetTextBounds(Name, Enum.Font.SourceSans, 13);
 
                 local Button = Library:Create('Frame', {
                     BackgroundColor3 = Library.MainColor;
                     BorderColor3 = Color3.new(0, 0, 0);
                     BorderSizePixel = 0;
-                    Size = UDim2.new(0, ButtonWidth + 20, 1, 0);
+                    Size = UDim2.new(0.5, -2, 1, 0);
                     ZIndex = 6;
                     Parent = TabboxButtons;
                 });
@@ -3592,6 +3592,20 @@ function Library:CreateWindow(...)
                 end;
 
                 function Tab:Resize()
+                    local TabCount = 0;
+
+                    for _, Tab in next, Tabbox.Tabs do
+                        TabCount = TabCount + 1;
+                    end;
+
+                    local WidthOffset = TabCount > 1 and -((4 * (TabCount - 1)) / TabCount) or 0
+
+                    for _, Button in next, TabboxButtons:GetChildren() do
+                        if not Button:IsA('UIListLayout') then
+                            Button.Size = UDim2.new(1 / TabCount, WidthOffset, 1, 0);
+                        end;
+                    end;
+
                     if (not Container.Visible) then
                         return;
                     end;
