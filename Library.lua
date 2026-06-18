@@ -3068,7 +3068,7 @@ function Library:CreateWindow(...)
     local WindowLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 0, 0, -3);
+        Position = UDim2.new(0, 0, 0, -6);
         Size = UDim2.new(0, 55, 0, 25);
         Text = Config.Title or '';
         TextColor3 = Library.FontColor;
@@ -3086,7 +3086,7 @@ function Library:CreateWindow(...)
     local WindowSeparator = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 55, 0, -3);
+        Position = UDim2.new(0, 55, 0, -6);
         Size = UDim2.new(0, 9, 0, 25);
         Text = Backslash;
         TextColor3 = Color3.new(1, 1, 1);
@@ -3102,7 +3102,7 @@ function Library:CreateWindow(...)
     local WindowSubLabel = Library:Create('TextLabel', {
         BackgroundTransparency = 1;
         FontFace = MonoFace;
-        Position = UDim2.new(0, 70, 0, -3);
+        Position = UDim2.new(0, 70, 0, -6);
         Size = UDim2.new(0, 87, 0, 25);
         Text = Config.SubTitle or game.Name;
         TextColor3 = Library.FontColor;
@@ -3118,11 +3118,11 @@ function Library:CreateWindow(...)
     });
 
     local function UpdateWindowHeader()
-        WindowLabel.Position = UDim2.new(0, 0, 0, -3)
+        WindowLabel.Position = UDim2.new(0, 0, 0, -6)
         WindowLabel.Size = UDim2.new(0, 55, 0, 25)
-        WindowSeparator.Position = UDim2.new(0, 55, 0, -3)
+        WindowSeparator.Position = UDim2.new(0, 55, 0, -6)
         WindowSeparator.Size = UDim2.new(0, 9, 0, 25)
-        WindowSubLabel.Position = UDim2.new(0, 70, 0, -3)
+        WindowSubLabel.Position = UDim2.new(0, 70, 0, -6)
         WindowSubLabel.Size = UDim2.new(0, 87, 0, 25)
     end
 
@@ -3475,8 +3475,8 @@ function Library:CreateWindow(...)
 
             local TabboxButtons = Library:Create('Frame', {
                 BackgroundTransparency = 1;
-                Position = UDim2.new(0, 0, 0, 14);
-                Size = UDim2.new(1, 0, 0, 20);
+                Position = UDim2.new(0, 4, 0, 14);
+                Size = UDim2.new(1, -8, 0, 20);
                 ZIndex = 5;
                 Parent = BoxInner;
             });
